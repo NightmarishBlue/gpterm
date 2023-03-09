@@ -1,11 +1,14 @@
-from sys import stdin
-import json
+#from sys import stdin
+from json import loads
 from time import sleep
 #from re import search
+from os import getenv
 import requests
 
-api_key = ""
-system_prompt = ""
+api_key = getenv('API_KEY')
+if not api_key:
+    raise Exception("Missing API Key. Provide it as an environment variable.")
+system_prompt = getenv('SYSTEM_PROMPT') or ""
 
 message_history = [
     {"role": "system", "content": f"""
@@ -34,7 +37,7 @@ while True:
         )
 
         if (code := request.status_code) == 200:
-            response_object = json.loads(request.content)
+            response_object = loads(request.content)
             message = response_object['choices'][0]['message']['content'].strip()
             message_history.append({"role": "assistant", "content": message})
             print(message)
