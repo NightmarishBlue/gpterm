@@ -3,11 +3,18 @@ from json import loads
 from time import sleep
 #from re import search
 from os import getenv
+
 import requests
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except:
+    pass
 
 api_key = getenv('API_KEY')
 if not api_key:
-    raise Exception("Missing API Key. Provide it as an environment variable.")
+    raise Exception('Missing API key. Provide it as an environment variable.')
 system_prompt = getenv('SYSTEM_PROMPT') or ""
 
 message_history = [
@@ -18,7 +25,7 @@ message_history = [
 
 
 while True:
-    user_message = input(">>> ").strip()
+    user_message = input('>>> ').strip()
     if user_message == '':
         break
 
